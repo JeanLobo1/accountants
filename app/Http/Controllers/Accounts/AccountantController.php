@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\UserModel;
 use App\Models\Role;
-// use App\Models\Items;
+use App\Models\RecordModel;
 class AccountantController extends Controller
 {
     public function index(){
@@ -83,6 +83,61 @@ class AccountantController extends Controller
         return redirect('/accountantslist');
 
     }
+
+
+    public function list(Request $request, RecordModel $rec){
+
+       $records= $rec->select('id','name','address','phone','additional_info')->get();
+
+
+        return view('recordlist',compact('records'));
+    }
+
+   public function creatrecord( Request $req,$id=null, RecordModel $rec)  {
+
+     $record=null;
+    if(!empty($id)){
+
+    $record=$rec->where('id',$id)->first();
+    }
+
+    return view('addedit',compact('record'));
+
+   }
+
+
+   public function record(Request $request,$id=null){
+
+    if(!empty($id)){
+
+        
+        RecordModel::where('id', $id)->update([
+            'name' => $request['name'],
+            'address' => $request['address'],
+            'phone' =>(int)$request['phone'],
+            'additional_info' => $request['additional_info'],
+         
+        ]);
+
+    }
+    else{
+        RecordModel::create([
+            'name' => $request['name'],
+            'address' => $request['address'],
+            'phone' =>(int)$request['phone'],
+            'additional_info' => $request['additional_info'],
+        ]);
+    
+    }
+
+    return redirect('/recordlist');
+
+   }
+
+
+
+
+
 
 
 }

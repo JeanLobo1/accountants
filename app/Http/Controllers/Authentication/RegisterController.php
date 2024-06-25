@@ -10,6 +10,12 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
 class RegisterController extends Controller
 {
+    public function helloworld(){
+
+      return view('helloworld');
+    }
+
+
      public function view(Request $request){ 
 
       $role=Role::where("role","Admin")->select("id","role","alias")->get();

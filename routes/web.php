@@ -13,17 +13,27 @@ use App\Http\Middleware\PermissionMiddleware;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/','App\Http\Controllers\Authentication\RegisterController@helloworld');
 
-
-Route::get('/','App\Http\Controllers\Authentication\RegisterController@view');
+// Route::get('/','App\Http\Controllers\Authentication\RegisterController@view');
 Route::post('/doreg','App\Http\Controllers\Authentication\RegisterController@register');
 Route::post('/dologin','App\Http\Controllers\Authentication\LoginController@login'); // login & register on same  view page
 
 Route::get('/logout','App\Http\Controllers\Authentication\LogOutController@logout');
 
+Route::get('/recordlist','App\Http\Controllers\Accounts\AccountantController@list')->name('list_record');
 
+
+Route::get('/addrecord','App\Http\Controllers\Accounts\AccountantController@creatrecord')->name('add_record');
+Route::post('/add-records','App\Http\Controllers\Accounts\AccountantController@record')->name('post_add_record');
+Route::get('/edit_record/{id}','App\Http\Controllers\Accounts\AccountantController@creatrecord')->name('edit_record');
+Route::post('/update_record/{id}','App\Http\Controllers\Accounts\AccountantController@record')->name('update_record');
+Route::get('/delete_record/{id}','App\Http\Controllers\Accounts\AccountantController@deleterecord')->name('delete_record');
 
 Route::middleware([ UserAuth::class])->group(function(){
+
+
+
 
     Route::middleware([PermissionMiddleware::class])->group(function(){
 
@@ -44,6 +54,9 @@ Route::middleware([ UserAuth::class])->group(function(){
     Route::get('/edit_accounts/{id}','App\Http\Controllers\Accounts\AccountsController@edit')->name('edit_accounts');
     Route::post('/update_accounts/{id}','App\Http\Controllers\Accounts\AccountsController@update')->name('update_accounts');
     Route::get('/delete_accounts/{id}','App\Http\Controllers\Accounts\AccountsController@delete')->name('delete_accounts');
+
+
+
 
     Route::get('/roles_list','App\Http\Controllers\Permission\PermissionController@rolelist')->name('roles_list');
     // Route::get('/add_roles','App\Http\Controllers\Permission\PermissionController@createview')->name('add_role');
